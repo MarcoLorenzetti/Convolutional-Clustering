@@ -75,13 +75,13 @@ def generate_colors(num_clusters):
     colors = [tuple(np.random.randint(0, 255, 3)) for x in range(num_clusters)]
     return np.array(colors).tolist()
 
-# CONVOLUTIONAL CLUSTERING (ONLY VISUALIZATION)
+# ---------------------- CONVOLUTIONAL CLUSTERING (ONLY VISUALIZATION) ----------------------
 def CC(df, cols=None,
        scale_size=100, pad=None, plot_matrix=False,
        kernel_type='mean', k_size=None, sigma=20,
        ratio_scaler=0.9, THR=100, loops=2,
        draw_type='line', radius=2, thickness=2,
-       show_clusters=False):
+       show_clusters=False, plot_scatter=True):
     
     if cols is None:
         col1, col2 = df.columns[0], df.columns[1]
@@ -165,6 +165,7 @@ def CC(df, cols=None,
     if show_clusters:
         show_img(img_cluster, title=f'Convolutional Clustering L={loops}\nkernel: type={kernel_type}  size={k_size}')
     
+        
     # df_cc['label']
     L = len(df_scaled.index) 
     labels = []
@@ -177,4 +178,9 @@ def CC(df, cols=None,
     df2 = df.copy()
     df2['label'] = labels
     
+    if plot_scatter:
+        plt.figure(figsize=(6,6))
+        plt.scatter(df2[col1], df2[col2], c=df2['label'])
+        plt.xlabel(col1), plt.ylabel(col2)
+        plt.show()
     return df2
